@@ -110,9 +110,8 @@ def build_team(player_var, player):
                         Team.append(name)
 def main():
         prob_setup()
-        for player_var in PLAYER_VARS:
-                for player in PLAYERS:
-                        build_team(player_var, player)
+        for i in range(len(PLAYER_VARS)):
+                build_team(PLAYER_VARS[i], PLAYERS[i])
         print(Team)
 
 if __name__ == "__main__":
