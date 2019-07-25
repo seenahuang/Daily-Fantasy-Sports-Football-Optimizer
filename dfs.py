@@ -21,6 +21,7 @@ K_VARS = pulp.LpVariable.dicts("K", K_AMOUNT, 0, 1, pulp.LpBinary)
 
 # Building team iteratively. 
 PLAYER_VARS = [Q_VARS,R_VARS,W_VARS,T_VARS,D_VARS,K_VARS]
+PLAYERS = [q, r, w, t, d, k]
 
 # recommended team
 Team = []
@@ -102,15 +103,16 @@ def prob_setup():
 
         return prob
 
-def build_team(player_var):
+def build_team(player_var, player):
         for i in player_var:
                 if player_var[i].varValue > 0.00001:
-                        name, cost, points = player_var[i]
+                        name, cost, points = player[i]
                         Team.append(name)
 def main():
         prob_setup()
         for player_var in PLAYER_VARS:
-                build_team(player_var)
+                for player in PLAYERS:
+                        build_team(player_var, player)
         print(Team)
 
 if __name__ == "__main__":
