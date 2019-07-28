@@ -1,15 +1,22 @@
 import pulp
 
 # max you can spend on players
-M = 78
+M = 50
 
 # the number of players at each position we're considering
-QB_AMOUNT = range(32)
-RB_AMOUNT = range(50)
-WR_AMOUNT = range(50)
-TE_AMOUNT = range(32)
-D_AMOUNT = range(32)
-K_AMOUNT = range(32)
+QB_AMOUNT = range(2)
+RB_AMOUNT = range(3)
+WR_AMOUNT = range(3)
+TE_AMOUNT = range(2)
+D_AMOUNT = range(2)
+K_AMOUNT = range(2)
+
+q = [("Mahomes", 15, 25), ("Newton", 11, 21)]
+r = [("Barkley", 12, 15),("Cook", 10, 13.5),("Johnson", 7, 9.5)]
+w = [("Hopkins", 11, 14),("Green", 9, 10.5),("Godwin", 7, 8)]
+t = [("Kelce", 11, 12), ("Howard", 8, 8)]
+d = [("Bears", 8, 8), ("Bills", 5, 6)]
+k = [("Gould", 6, 8), ("Janikowski", 5,6)]
 
 # vectors of 0's and 1's, 0 means don't pick, 1 means pick
 Q_VARS = pulp.LpVariable.dicts("QB", QB_AMOUNT, 0, 1, pulp.LpBinary)
@@ -19,7 +26,7 @@ T_VARS = pulp.LpVariable.dicts("TE", TE_AMOUNT, 0, 1, pulp.LpBinary)
 D_VARS = pulp.LpVariable.dicts("D", D_AMOUNT, 0, 1, pulp.LpBinary)
 K_VARS = pulp.LpVariable.dicts("K", K_AMOUNT, 0, 1, pulp.LpBinary)
 
-# Building team iteratively. 
+# Building team iteratively.
 PLAYER_VARS = [Q_VARS,R_VARS,W_VARS,T_VARS,D_VARS,K_VARS]
 PLAYERS = [q, r, w, t, d, k]
 
@@ -65,7 +72,7 @@ def constraint1(q, r, w, t, d, k):
     k_cost = dict_dot(get_cost(k), K_VARS)
     return q_cost + r_cost + w_cost + t_cost + d_cost + k_cost
 
-# Possible scope issue may need to pass objective and constraint1 functions to call properly. 
+# Possible scope issue may need to pass objective and constraint1 functions to call properly.
 def prob_setup():
         prob = pulp.LpProblem("BestTeam", pulp.LpMaximize)
 
@@ -79,19 +86,19 @@ def prob_setup():
         prob += pulp.lpSum(Q_VARS) == 1
 
         # we can have at most 3 running backs, must have 2
-        prob += pulp.lpSum(R_VARS) <= 3
-        prob += pulp.lpSum(R_VARS) >= 2
+        prob += pulp.lpSum(R_VARS) <= 2
+        prob += pulp.lpSum(R_VARS) >= 1
 
         # we can have at most 3 wide receivers, must have 2
-        prob += pulp.lpSum(W_VARS) <= 3
-        prob += pulp.lpSum(W_VARS) >= 2
+        prob += pulp.lpSum(W_VARS) <= 2
+        prob += pulp.lpSum(W_VARS) >= 1
 
         # we can have at most 2 tight ends, must have 1
         prob += pulp.lpSum(T_VARS) <= 2
         prob += pulp.lpSum(T_VARS) >= 1
 
         # we must have 6 running backs, wide receivers, and tight ends combined
-        prob += pulp.lpSum(R_VARS) + pulp.lpSum(W_VARS) + pulp.lpSum(T_VARS) == 6
+        prob += pulp.lpSum(R_VARS) + pulp.lpSum(W_VARS) + pulp.lpSum(T_VARS) == 4
 
         # we need 1 defense
         prob += pulp.lpSum(D_VARS) == 1
