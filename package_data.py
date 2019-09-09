@@ -1,6 +1,6 @@
 import pandas as pd
 import math
-
+  
 # salary_df: dataframe of salaries for one position
 # projection_df: dataframe of projections for one position
 # count: number of players being considered for this position
