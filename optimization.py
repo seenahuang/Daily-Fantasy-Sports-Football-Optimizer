@@ -1,17 +1,17 @@
 import pulp
 
 # To use this module: Must create position amounts (how many players you will consider at each position)
-# and player_info array. 
+# and player_info array.
 # Call setup_data function using these values
-# create constraints and find max spending value
+# create constraints and find max spending value  
 # call optimize function
 
 
 # range variables: number of players considered at each position
 # player_info: 2d array, each element is an array for a position, has (name, salary, projection) info.
-# player_info must be in qb,rb,wr,te,d order. 
+# player_info must be in qb,rb,wr,te,d order.
 # function returns array of tuples (x,y), x = all player info, y = binary vector. Each tuple is one position
-def setup_data(qb_range, rb_range, wr_range, te_range, d_range, player_info): 
+def setup_data(qb_range, rb_range, wr_range, te_range, d_range, player_info):
 	# vectors of 0's and 1's, 0 means don't pick, 1 means pick
 	qb_vars = pulp.LpVariable.dicts("QB", qb_range, 0, 1, pulp.LpBinary)
 	rb_vars = pulp.LpVariable.dicts("RB", rb_range, 0, 1, pulp.LpBinary)
@@ -19,7 +19,7 @@ def setup_data(qb_range, rb_range, wr_range, te_range, d_range, player_info):
 	te_vars = pulp.LpVariable.dicts("TE", te_range, 0, 1, pulp.LpBinary)
 	d_vars = pulp.LpVariable.dicts("D", d_range, 0, 1, pulp.LpBinary)
 
-	
+
 	player_vars = [qb_vars,rb_vars,wr_vars,te_vars,d_vars]
 	player_info_yorn = list(zip(player_info,player_vars))
 	return player_info_yorn
@@ -27,7 +27,7 @@ def setup_data(qb_range, rb_range, wr_range, te_range, d_range, player_info):
 
 
 
-def sum(vars): 
+def sum(vars):
     return pulp.lpSum(vars)
 
 # q,r,w,t,d,k are 3-tuples with (Name, Cost, Points)
@@ -93,6 +93,3 @@ def prob_solve(constraints, player_info_yorn,M):
         prob.solve()
 
         return prob
-
-
-
