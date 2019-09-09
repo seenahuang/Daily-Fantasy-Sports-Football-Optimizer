@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def qb_projections(url, amount, sunday, teams):
+def qb_projections(url, amount, remove, teams_rm):
 
     source = requests.get(url).text
 
@@ -21,16 +21,16 @@ def qb_projections(url, amount, sunday, teams):
         team = team[len(team)-4:len(team)].strip()
         name = info[0].a.text
         fpts = round(float(info[10].text),1)
-        if sunday and not team in teams:
+        if remove and not team in teams_rm:
             df.loc[next] = [name, team, fpts]
             next+=1
-        elif not sunday:
+        elif not remove:
             df.loc[next] = [name, team, fpts]
             next+=1
 
     return df
 
-def rb_projections(url,amount, sunday, teams):
+def rb_projections(url,amount, remove, teams_rm):
 
     source = requests.get(url).text
 
@@ -49,16 +49,16 @@ def rb_projections(url,amount, sunday, teams):
         name = info[0].a.text
         rec = float(info[4].text)
         fpts = round(float(info[8].text)+rec,1)
-        if sunday and not team in teams:
+        if remove and not team in teams_rm:
             df.loc[next] = [name, team, fpts]
             next+=1
-        elif not sunday:
+        elif not remove:
             df.loc[next] = [name, team, fpts]
             next+=1
 
     return df
 
-def wr_projections(url,amount, sunday, teams):
+def wr_projections(url,amount, remove, teams_rm):
 
     source = requests.get(url).text
 
@@ -77,16 +77,16 @@ def wr_projections(url,amount, sunday, teams):
         name = info[0].a.text
         rec = float(info[1].text)
         fpts = round(float(info[8].text)+rec,1)
-        if sunday and not team in teams:
+        if remove and not team in teams_rm:
             df.loc[next] = [name, team, fpts]
             next+=1
-        elif not sunday:
+        elif not remove:
             df.loc[next] = [name, team, fpts]
             next+=1
 
     return df
 
-def te_projections(url, amount, sunday, teams):
+def te_projections(url, amount, remove, teams_rm):
     source = requests.get(url).text
 
     soup = BeautifulSoup(source,'lxml')
@@ -104,16 +104,16 @@ def te_projections(url, amount, sunday, teams):
         name = info[0].a.text
         rec = float(info[1].text)
         fpts = round(float(info[5].text)+rec,1)
-        if sunday and not team in teams:
+        if remove and not team in teams_rm:
             df.loc[next] = [name, team, fpts]
             next+=1
-        elif not sunday:
+        elif not remove:
             df.loc[next] = [name, team, fpts]
             next+=1
 
     return df
 
-def d_projections(url, amount, sunday, teams):
+def d_projections(url, amount, remove, teams_rm):
     source = requests.get(url).text
 
     soup = BeautifulSoup(source,'lxml')
@@ -130,10 +130,10 @@ def d_projections(url, amount, sunday, teams):
         team = team[len(team)-4:len(team)].strip()
         name = info[0].a.text
         fpts = round(float(info[9].text),1)
-        if sunday and not team in teams:
+        if remove and not team in teams_rm:
             df.loc[next] = [name, team, fpts]
             next+=1
-        elif not sunday:
+        elif not remove:
             df.loc[next] = [name, team, fpts]
             next+=1
 
