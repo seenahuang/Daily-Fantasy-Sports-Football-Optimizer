@@ -1,12 +1,14 @@
 import package_data as pk
 import optimization as op
-import pandas as pd
 import table_scrape as ts
+import pandas as pd
+import sys
 
 
-# teams not playing on sunday
-NOT_SUNDAY = ['GB', 'CHI', 'HOU', 'NO', 'DEN', 'OAK']
-sunday = False
+# script arguments
+salary_file = sys.argv[1]
+remove = sys.argv[2]
+teams_rm = sys.argv[3]
 
 # url to grab projections
 qb_url = "https://www.fantasypros.com/nfl/projections/qb.php?week=1"
@@ -61,14 +63,15 @@ position_counts = [QB_COUNT,RB_COUNT, WR_COUNT, TE_COUNT, D_COUNT]
 
 
 
-salary_data = pd.read_csv("/Users/seenahuang/Desktop/DFS/DKSalaries.csv")
+salary_data = pd.read_csv(salary_file)
+#DK salary data includes player suffixes, remove them to be able to join data properly
 modify_player_names(salary_data,'Name')
 
-qb_projections = ts.qb_projections(qb_url, QB_COUNT, sunday, NOT_SUNDAY)
-rb_projections = ts.rb_projections(rb_url, RB_COUNT, sunday, NOT_SUNDAY)
-wr_projections = ts.wr_projections(wr_url, WR_COUNT, sunday, NOT_SUNDAY)
-te_projections = ts.te_projections(te_url, TE_COUNT, sunday, NOT_SUNDAY)
-d_projections = ts.d_projections(d_url, D_COUNT, sunday, NOT_SUNDAY)
+qb_projections = ts.qb_projections(qb_url, QB_COUNT, remove, teams_rm)
+rb_projections = ts.rb_projections(rb_url, RB_COUNT, remove, teams_rm)
+wr_projections = ts.wr_projections(wr_url, WR_COUNT, remove, teams_rm)
+te_projections = ts.te_projections(te_url, TE_COUNT, remove, teams_rm)
+d_projections = ts.d_projections(d_url, D_COUNT, remove, teams_rm)
 
 
 position_projections = [qb_projections, rb_projections, wr_projections, te_projections, d_projections]
