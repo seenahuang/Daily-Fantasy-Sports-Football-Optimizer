@@ -7,7 +7,7 @@ pip install -r requirements.txt
 ``` 
 Run
 ```python
-python main.py <filepath> <bool> <teams>
+python main.py <filepath> <bool> <teams> <week>
 ```  
 
 	- <filepath> has the path to the csv that holds the salary data. 
@@ -20,4 +20,6 @@ python main.py <filepath> <bool> <teams>
 	- <teams> is the array of team abbreviations whose players you want to remove
 	
 		- Ex. ["GB", "CHI", "HOU", "NO", "DEN", "OAK"] 
+		
+	- <week> is int representing the current week of the season
 
