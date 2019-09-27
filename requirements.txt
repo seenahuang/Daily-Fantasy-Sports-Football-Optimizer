@@ -1,0 +1,4 @@
+pandas==0.24.2
+requests==2.22.0
+PuLP==1.6.10
+beautifulsoup4==4.8.0
