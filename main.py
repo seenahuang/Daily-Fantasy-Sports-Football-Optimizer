@@ -9,13 +9,15 @@ import sys
 salary_file = sys.argv[1]
 remove = sys.argv[2]
 teams_rm = sys.argv[3]
+week = sys.argv[4]
+
 
 # url to grab projections
-qb_url = "https://www.fantasypros.com/nfl/projections/qb.php?week=1"
-rb_url = "https://www.fantasypros.com/nfl/projections/rb.php?week=1"
-wr_url = "https://www.fantasypros.com/nfl/projections/wr.php?week=1"
-te_url = "https://www.fantasypros.com/nfl/projections/te.php?week=1"
-d_url = "https://www.fantasypros.com/nfl/projections/dst.php?week=1"
+qb_url = "https://www.fantasypros.com/nfl/projections/qb.php?week="+str(week)
+rb_url = "https://www.fantasypros.com/nfl/projections/rb.php?week="+str(week)
+wr_url = "https://www.fantasypros.com/nfl/projections/wr.php?week="+str(week)
+te_url = "https://www.fantasypros.com/nfl/projections/te.php?week="+str(week)
+d_url = "https://www.fantasypros.com/nfl/projections/dst.php?week="+str(week)
 
 # max you can spend on players
 M = 50000
@@ -101,13 +103,16 @@ constraints.append(op.sum(player_info_yorn[3][1]) >= 1)
 # we must have 7 running backs, wide receivers, and tight ends combined
 constraints.append(op.sum(player_info_yorn[1][1]) + op.sum(player_info_yorn[2][1]) + op.sum(player_info_yorn[3][1]) == 7)
 
+# If we put a rb/wr in flex, we can have at most 6 rb+wr
+constraints.append(op.sum(player_info_yorn[1][1])+op.sum(player_info_yorn[2][1])<=6)
+#If we put a rb/te in flex, we can have at most 4 rb+te
+constraints.append(op.sum(player_info_yorn[1][1])+op.sum(player_info_yorn[3][1])<=4)
+#If we put a wr/te in flex, we can have at most 5 wr+te 
+constraints.append(op.sum(player_info_yorn[2][1])+op.sum(player_info_yorn[3][1])<=5)
+
+
 # we need 1 defense
 constraints.append(op.sum(player_info_yorn[4][1]) == 1)
-
-
-
-
-
 
 
 
