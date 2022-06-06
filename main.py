@@ -136,3 +136,6 @@ for i in range(len(player_info_yorn)):
     build_team(player_info_yorn[i][0], player_info_yorn[i][1], team)
 
 print(team)
+
+
+#commit 1
